@@ -1,10 +1,27 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:list_model_cubit_repo_api/data/models/post_model.dart';
 import 'package:list_model_cubit_repo_api/shared/components.dart';
 
 // layout screen
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   List<PostModel> renderList = List<PostModel>();
+
+  @override
+  void initState() {
+    fetchData().then((value) {
+      setState(() {
+        // renderList.addAll(value);
+        renderList = value;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,4 +64,23 @@ class HomeScreen extends StatelessWidget {
           )
         : Center(child: loadingDots());
   }
+}
+
+// create data Source as Local Function
+// fetch data from the API (Database)
+Future<List<PostModel>> fetchData() async {
+  var posts = List<PostModel>();
+  try {
+    Dio dio = Dio();
+    String url = "https://jsonplaceholder.typicode.com/";
+    dio.options.baseUrl = url;
+    await dio.get("posts").then((response) {
+      posts = (response.data as List)
+          .map((json) => PostModel.fromJson(json))
+          .toList();
+    });
+  } catch (e) {
+    print(e);
+  }
+  return posts;
 }
