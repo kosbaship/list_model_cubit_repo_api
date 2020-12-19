@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:list_model_cubit_repo_api/data/models/post_model.dart';
+import 'package:list_model_cubit_repo_api/data/repository/repository.dart';
 
-class ApiProvider {
+class ApiProvider implements Repository {
   var posts = List<PostModel>();
 
+  @override
   Future<List<PostModel>> fetchData() async {
     if (posts.length == 0) {
       try {

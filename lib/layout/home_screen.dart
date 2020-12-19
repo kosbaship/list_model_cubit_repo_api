@@ -17,25 +17,22 @@ class HomeScreen extends StatelessWidget {
 
     // create list
     return BlocConsumer<HomeCubit, HomeStates>(
-      listener: (context, state) async {
+      listener: (context, state) {
         //====================================
         if (state is HomeLoadingState) {
-          print(
-              "=================  show alert when loading ======================");
+          print("=================  show alert when loading");
           showDialog(
             context: context,
-            builder: (ctx) => AlertDialog(
+            builder: (context) => AlertDialog(
               backgroundColor: Colors.teal,
               content: loadingDots(),
             ),
           );
+          Future.delayed(Duration(seconds: 2));
         }
         if (state is HomeSuccessState) {
           // save the Cubit list in the UI list
-          if (renderList.length == 0) {
-            renderList = HomeCubit.get(context).cubitPosts;
-            Navigator.pop(context);
-          }
+          renderList = state.listOfDate;
           print("=================  congrats here is your data");
         }
         //====================================
