@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => HomeCubit(ApiProvider()),
+      create: (BuildContext context) => HomeCubit(ApiProvider())..getPosts(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // basic theme and back ground

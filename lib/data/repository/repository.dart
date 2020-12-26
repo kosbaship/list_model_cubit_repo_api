@@ -1,5 +1,5 @@
-import 'package:list_model_cubit_repo_api/data/models/post_model.dart';
+import 'package:dio/dio.dart';
 
 abstract class Repository {
-  Future<List<PostModel>> fetchData();
+  Future<Response> fetchData({String path});
 }
