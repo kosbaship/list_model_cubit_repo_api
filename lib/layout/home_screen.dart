@@ -51,10 +51,7 @@ class HomeScreen extends StatelessWidget {
               );
             },
           ),
-          fallback: (context) => Center(
-              child: CircularProgressIndicator(
-            backgroundColor: Colors.deepOrange,
-          )),
+          fallback: (context) => Center(child: loadingDots()),
         );
       },
     );
