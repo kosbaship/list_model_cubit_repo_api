@@ -1,6 +1,7 @@
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:list_model_cubit_repo_api/data/models/post.dart';
 import 'package:list_model_cubit_repo_api/layout/cubit/home_cubit.dart';
 import 'package:list_model_cubit_repo_api/layout/cubit/home_states.dart';
 import 'package:list_model_cubit_repo_api/shared/components.dart';
@@ -9,17 +10,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit, HomeStates>(
-      listener: (context, state) {
-        if (state is HomeLoadingState) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              backgroundColor: Colors.teal,
-              content: loadingDots(),
-            ),
-          );
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         var renderList = HomeCubit.get(context).cubitPosts;
 
@@ -29,8 +20,9 @@ class HomeScreen extends StatelessWidget {
             // modify the list length
             itemCount: renderList.length,
             itemBuilder: (BuildContext context, int index) {
+              // ================= هنا ======================
               // this list to get post by index
-              var post = renderList[index];
+              Post(renderList[index]);
               // this is the list item representation out design
               return Card(
                 elevation: 8,
@@ -41,35 +33,30 @@ class HomeScreen extends StatelessWidget {
                     child: ListTile(
                       // one
                       leading: defaultText(
-                        title: "${post.id}",
+                        title: "${Post.getID()}",
                         fontFamily: "Pacifico",
                         fontWeight: FontWeight.normal,
                       ),
                       //two
                       title: defaultText(
-                        title: post.title ?? "title",
+                        title: "${Post.getTitle()}",
                         fontFamily: "Pacifico",
                         fontWeight: FontWeight.normal,
                       ),
                       //three
                       subtitle: defaultText(
-                        title: post.body ?? "body or message",
+                        title: "${Post.getBody()}",
                       ),
                     )),
               );
             },
           ),
-          fallback: (context) => Center(child: CircularProgressIndicator()),
+          fallback: (context) => Center(
+              child: CircularProgressIndicator(
+            backgroundColor: Colors.deepOrange,
+          )),
         );
       },
     );
   }
 }
-
-// showDialog(
-// context: context,
-// builder: (context) => AlertDialog(
-// backgroundColor: Colors.teal,
-// content: loadingDots(),
-// ),
-// );
